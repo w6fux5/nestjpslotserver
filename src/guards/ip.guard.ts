@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import * as requestIp from 'request-ip';
 
-const WHITE_LIST = ['::1', '(^192.168.)', '127.0.0.1'];
+const WHITE_LIST = ['::1', '(^192.168.)', '127.0.0.1', '::ffff:192.168.10.55'];
 
 @Injectable()
 export class IpGuard implements CanActivate {
@@ -15,7 +15,7 @@ export class IpGuard implements CanActivate {
 
     if (isIpGuard) {
       const clientIp = requestIp.getClientIp(request) || '';
-      console.log(clientIp);
+      console.log(clientIp, 'client ip');
       const isLocal = /^::1/.test(clientIp) || /^192.168.10/.test(clientIp);
       const isWhiteList = WHITE_LIST.includes(clientIp);
       return isLocal || isWhiteList;
